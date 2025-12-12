@@ -1,0 +1,24 @@
+{
+  "name": "global-terrorism-ecosystem",
+  "version": "2.0.0",
+  "description": "PhD-Level Multi-Dimensional Terrorism Visualization - Novel Ecosystem Approach",
+  "main": "ecosystem.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server --port=8080",
+    "build": "echo 'Static site - no build needed'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "d3js",
+    "visualization",
+    "terrorism",
+    "data-viz"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1",
+    "live-server": "^1.2.2"
+  }
+}

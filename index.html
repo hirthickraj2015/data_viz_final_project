@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Terrorism Data Analysis</title>
+
+    <!-- D3.js for visualizations -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+
+    <link rel="stylesheet" href="css/ecosystem.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="ecosystem-container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Global Terrorism Data Analysis and Visualization</h1>
+            <p class="subtitle">Multi-Dimensional Exploratory Analysis of Terrorist Incidents (1970-2020)</p>
+        </header>
+
+        <!-- Control Panel (Top Bar) -->
+        <div class="control-panel top-controls">
+            <div class="control-group">
+                <div class="control-section">
+                    <label>Start Year:</label>
+                    <div class="range-wrapper">
+                        <input type="range" id="startYearRange" min="1970" max="2020" value="1970" step="1">
+                        <span id="startYearDisplay">1970</span>
+                    </div>
+                </div>
+                <div class="control-section">
+                    <label>End Year:</label>
+                    <div class="range-wrapper">
+                        <input type="range" id="endYearRange" min="1970" max="2020" value="2020" step="1">
+                        <span id="endYearDisplay">2020</span>
+                    </div>
+                </div>
+                <div class="control-separator"></div>
+                <div class="control-section">
+                    <label>Region:</label>
+                    <select id="regionFilter">
+                        <option value="all" selected>All Regions</option>
+                    </select>
+                </div>
+                <div class="control-section">
+                    <label>Country:</label>
+                    <select id="countryFilter">
+                        <option value="all" selected>All Countries</option>
+                    </select>
+                </div>
+                <div class="control-section">
+                    <label>Attack Type:</label>
+                    <select id="attackTypeFilter">
+                        <option value="all">All Types</option>
+                    </select>
+                </div>
+                <div class="control-section">
+                    <button id="resetFilters" class="btn-secondary">Reset Filters</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Grid Layout -->
+        <div class="grid-layout">
+        <!-- Row 1: Geographic Flow Network (Main Panel) -->
+        <div class="panel map-panel">
+            <div class="panel-header">
+                <h2>Geospatial Distribution of Terrorist Incidents</h2>
+                <div class="panel-controls">
+                    <button id="playAnimation" class="btn-primary">
+                        <span id="playIcon">▶</span> <span id="playText">Animate</span>
+                    </button>
+                    <div class="year-badge">
+                        <span class="year-label">Year:</span>
+                        <span id="currentYear" class="year-display">1970</span>
+                    </div>
+                </div>
+            </div>
+            <div id="map-container" class="viz-container"></div>
+            <div id="map-legend" class="legend"></div>
+        </div>
+
+        <!-- Row 2: Attack Signature Flow (Left Panel) -->
+        <div class="panel signature-flow-panel">
+            <div class="panel-header">
+                <h2>Sankey Diagram: Attack-Target-Weapon Flow</h2>
+                <p class="panel-subtitle">Attack Type → Target → Weapon</p>
+            </div>
+            <div id="sankey-container" class="viz-container"></div>
+        </div>
+
+        <!-- Attack Signature Chart (Sunburst) -->
+        <div class="panel signature-panel">
+            <div class="panel-header">
+                <div>
+                    <p class="panel-subtitle">Continents → Country → Incidents</p>
+                </div>
+                <h2>Hierarchical Pie Chart: Multi-level Attack Distribution</h2>
+            </div>
+            <div id="attack-chart-container" class="viz-container"></div>
+        </div>
+
+        <!-- Row 3: Temporal Evolution Heatmap (Bottom Panel) -->
+        <div class="panel temporal-panel">
+            <div class="panel-header">
+                <h2>Temporal-Spatial Heatmap: Regional Activity Over Time</h2>
+                <div class="heatmap-controls">
+                    <label class="radio-label">
+                        <input type="radio" name="metric" value="count" checked>
+                        <span class="radio-text">Incident Count</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="metric" value="casualties">
+                        <span class="radio-text">Casualties</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="metric" value="lethality">
+                        <span class="radio-text">Lethality Index</span>
+                    </label>
+                </div>
+            </div>
+            <div id="heatmap-container" class="viz-container"></div>
+        </div>
+        </div>
+
+        <!-- Statistics Dashboard (Row 4) -->
+        <div class="stats-dashboard">
+            <div class="stat-card">
+                <div class="stat-value" id="totalIncidents">0</div>
+                <div class="stat-label">Total Incidents</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalCasualties">0</div>
+                <div class="stat-label">Total Casualties</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="activeGroups">0</div>
+                <div class="stat-label">Active Groups</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="affectedRegions">0</div>
+                <div class="stat-label">Affected Regions</div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading-overlay">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p>Loading Data Visualization...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/ecosystem.js?v=3.2"></script>
+</body>
+
+</html>
