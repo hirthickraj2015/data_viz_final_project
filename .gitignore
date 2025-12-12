@@ -1,5 +1,4 @@
-# Large data files
-data/*.csv
+# Large data files (Excel only, CSV handled by Git LFS)
 data/*.xlsx
 
 # Python
