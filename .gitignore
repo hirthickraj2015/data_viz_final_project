@@ -1,26 +1,19 @@
-# Dependencies
-node_modules/
-package-lock.json
+# Large data files
+data/*.csv
+data/*.xlsx
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environments
+.env
+venv/
+ENV/
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log
-npm-debug.log*
-
-# Build outputs (if any)
-dist/
-build/
-
-# Environment variables
-.env
-.env.local
