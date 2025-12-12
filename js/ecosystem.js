@@ -98,7 +98,7 @@ async function init() {
 async function loadData() {
     try {
         console.log('Loading CSV data...');
-        const data = await d3.csv('data/dataset.csv');
+        const data = await d3.csv('./data/dataset.csv');
         console.log('CSV loaded, processing ' + data.length + ' rows...');
 
         if (!data || data.length === 0) {
